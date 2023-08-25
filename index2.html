@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV to HTML</title>
+</head>
+<body>
+
+<table id="csvTable">
+  <thead>
+    <tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Team</th>
+		<th>Year</th>
+		<th>PassCmp</th>
+		<th>PassAtt</th>
+		<th>PassYds</th>
+		<th>PassTDs</th>
+		<th>PassINTs</th>
+		<th>RushAtt</th>
+		<th>RushYds</th>
+		<th>RushTDs</th>
+		<th>RecRec</th>
+		<th>RecTgts</th>
+		<th>RecYds</th>
+		<th>RecTDs</th>
+		<th>Scks</th>
+		<th>Fmbs</th>
+		<th>PassValue</th>
+		<th>PassValuePP</th>
+		<th>RushValue</th>
+		<th>RushValuePP</th>
+		<th>RecValue</th>
+		<th>TotalValuePP</th>
+		<th>TotalValue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- CSV data will be inserted here -->
+  </tbody>
+</table>
+
+<script>
+fetch('actualfootballstatscopy.csv')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  })
+  .then(data => {
+    const rows = data.split('\n');
+    const table = document.getElementById('csvTable').getElementsByTagName('tbody')[0];
+    const fragment = document.createDocumentFragment();
+
+    for (const row of rows) {
+      const cells = row.split(',');
+      const newRow = document.createElement('tr');
+
+      for (const cell of cells) {
+        const newCell = document.createElement('td');
+        newCell.textContent = cell;
+        newRow.appendChild(newCell);
+      }
+
+      fragment.appendChild(newRow);
+    }
+
+    table.appendChild(fragment);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+</script>
+
+</body>
+</html>
