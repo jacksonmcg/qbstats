@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV to HTML</title>
+</head>
+<body class = "overworld">
+
+    <p><img align="right" src="player-icons/joeburrow.png"></p>
+    <div class = "title"><p id="demo"></p></div>
+    <script>
+        var playername = "Joe Burrow";
+        //playername = playername.toLowerCase();
+        document.getElementById("demo").innerHTML = playername;
+    </script>
+
+  <!-- <input type="text" onkeyup="myFunction()" id="filterInput" placeholder="Years"> -->
+
+  <div class="center">
+    <table id="csvTable">
+      <thead id="header">
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Team</th>
+          <th>Year</th>
+          <th>Total</th>
+          <th>Cmps</th>
+          <th>Att</th>
+          <th>Yds</th>
+          <th>TDs</th>
+          <th>INTs</th>
+          <th>Sck</th>
+          <th>PAV</th>
+          <th>PAVP</th>
+          <th>Att</th>
+          <th>Yds</th>
+          <th>TDs</th>
+          <th>Fum</th>
+          <th>RUV</th>
+          <th>RUVP</th>
+          <th>Rec</th>
+          <th>Tgts</th>
+          <th>Yds</th>
+          <th>TDs</th>
+          <th>REV</th>
+        </tr>
+      </thead>
+      </div>
+      <tbody>
+        <!-- CSV data will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+<script>
+
+    fetch('actualfootballstatscopy.csv')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then(data => {
+        const rows = data.split('\n');
+        const table = document.getElementById('csvTable').getElementsByTagName('tbody')[0];
+        const fragment = document.createDocumentFragment();
+
+        for (const row of rows) {
+          var i = 0;
+          const cells = row.split(',');
+          const newRow = document.createElement('tr');
+          for (const cell of cells) {
+            const newCell = document.createElement('td');
+            newCell.textContent = cell;
+            if (i == 0) {
+              newCell.classList.add('rank'); // Apply the 'green' class to the ERA3 cell
+            }
+            if (i == 4 || i == 11 || i == 17 || i == 23) {
+              newCell.classList.add('green'); // Apply the 'green' class to the ERA3 cell
+            }
+            if (i == 12 || i == 18) {
+              newCell.classList.add('green2'); // Apply the 'green' class to the ERA3 cell
+            }
+            newRow.appendChild(newCell);
+            i = i + 1;
+          }
+          fragment.appendChild(newRow);
+        }
+
+        table.appendChild(fragment);
+      })
+      .then(() => myFunction(2022))
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+
+      function myFunction(x) {
+        // Declare variables
+
+       
+        var input, filter, table, tr, td, td2, td3, rankVal, txtValue2, i, txtValue, threshold, attvalue;
+
+        rankVal = 1;
+        table = document.getElementById("csvTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+
+          td = tr[i].getElementsByTagName("td")[3]; // Corrected column index
+          td2 = tr[i].getElementsByTagName("td")[2]; 
+          td3 = tr[i].getElementsByTagName("td")[0];
+          td4 = tr[i].getElementsByTagName("td")[1];
+
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              attValue = parseInt(tr[i].getElementsByTagName("td")[6].textContent) + 
+              parseInt(tr[i].getElementsByTagName("td")[8].textContent);
+              tr[i].style.display = "";
+              if (td4.textContent == "Joe Burrow") {
+                if(td2) {
+                  txtValue2 = td2.textContent || td2.innerText;
+                  td2 = replaceLogos(txtValue2, td2);
+                }
+                else{
+                  td3.textContent = rankVal;
+                  rankVal++;
+                }
+              } 
+              else {
+                tr[i].style.display = "none";
+              }
+            }
+        }
+      }
+
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------------------------------------------------------------------------
+
+      function replaceLogos(x, td2){
+        if(x.includes("Chiefs")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Chiefs.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+        else if(x.includes("Bills")) {
+          // Create an image element
+          var img = document.createElement("img");
+          img.src = "logos/Bills.png"; // Replace with the actual path to the image
+
+          // Store the original content of column two and set the image as content
+          td2.setAttribute("data-original-content", td2.textContent);
+          td2.textContent = "";
+          td2.appendChild(img);
+        }
+        else if(x.includes("Bears")) {
+          // Create an image element
+          var img = document.createElement("img");
+          img.src = "logos/Bears.png"; // Replace with the actual path to the image
+
+          // Store the original content of column two and set the image as content
+          td2.setAttribute("data-original-content", td2.textContent);
+          td2.textContent = "";
+          td2.appendChild(img);
+        }
+        else if(x.includes("49ers")) {
+          // Create an image element
+          var img = document.createElement("img");
+          img.src = "logos/49ers.png"; // Replace with the actual path to the image
+
+          // Store the original content of column two and set the image as content
+          td2.setAttribute("data-original-content", td2.textContent);
+          td2.textContent = "";
+          td2.appendChild(img);
+        }
+          else if(x.includes("Eagles")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Eagles.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Cowboys")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Cowboys.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Commanders")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Commanders.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Giants")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Giants.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Falcons")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Falcons.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Rams")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Rams.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Bengals")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Bengals.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Browns")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Browns.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Steelers")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Steelers.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Ravens")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Ravens.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("2 Teams") || x.includes("3 Teams")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/NFL.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Dolphins")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Dolphins.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Jets")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Jets.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Patriots")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Patriots.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Packers")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Packers.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Panthers")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Panthers.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Broncos")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Broncos.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Cardinals")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Cardinals.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Chargers")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Chargers.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Lions")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Lions.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Vikings")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Vikings.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Raiders")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Raiders.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Texans")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Texans.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Saints")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Saints.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Titans")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Titans.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Buccaneers")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Buccaneers.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Colts")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Colts.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Seahawks")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Seahawks.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Jaguars")) {
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/Jaguars.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+          else if(x.includes("Bison") || x.includes("Yanks")){
+            // Create an image element
+            var img = document.createElement("img");
+            img.src = "logos/0.png"; // Replace with the actual path to the image
+
+            // Store the original content of column two and set the image as content
+            td2.setAttribute("data-original-content", td2.textContent);
+            td2.textContent = "";
+            td2.appendChild(img);
+          }
+      }
+
+
+      
+      
+
+</script>
+
+
+
+
+
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  .overworld {
+    background-color: rgb(216, 224, 228);
+    font-weight: bold;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .rank {
+    background-color: rgb(199, 199, 199);
+    border-right: 1px solid #000000;
+  }
+
+  .center {
+    text-align: center;
+    background-color: white;
+  }
+
+  .green {
+    font-weight: bold;
+    background-color: darkgreen;
+    color: white;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+  }
+
+  .green2 {
+    font-weight: bold;
+    background-color: lime;
+    color: black;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+  }
+
+  #csvTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #000000;
+    font-size: 18px;
+  }
+  
+  #csvTable th, #myTable td {
+    text-align: center;
+    padding: 12px;
+  }
+  
+  #csvTable tr {
+    border-bottom: 1px solid #000000;
+  }
+  
+  #csvTable tr.header, #myTable tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  #header {
+    background-color: rgb(199, 199, 199);
+  }
+
+  </style>
+
+</body>
+</html>
